@@ -1,16 +1,16 @@
 import sql from 'mssql'
-import config from '../../db.js'
+import config from '../db.js'
 import 'dotenv/config'
 
-const pizzaTabla = process.env.DB_TABLA_PIZZA;
+const personajeTabla = process.env.DB_TABLA_PIZZA;
 
-export class PizzaService {
+export class PersonajeService {
 
     getPersonaje = async () => {
         console.log('This is a function on the service');
 
         const pool = await sql.connect(config);
-        const response = await pool.request().query(`SELECT * from ${pizzaTabla}`);
+        const response = await pool.request().query(`SELECT * from ${personajeTabla}`);
         console.log(response)
 
         return response.recordset;
@@ -22,7 +22,7 @@ export class PizzaService {
         const pool = await sql.connect(config);
         const response = await pool.request()
             .input('id',sql.Int, id)
-            .query(`SELECT * from ${pizzaTabla} where id = @id`);
+            .query(`SELECT * from ${personajeTabla} where id = @id`);
         console.log(response)
 
         return response.recordset[0];
@@ -33,7 +33,7 @@ export class PizzaService {
 
         const pool = await sql.connect(config);
         const response = await pool.request()
-            .input('Imagen',sql.URL, personaje?.imagen ?? '')
+            .input('Imagen',sql.VarChar, personaje?.imagen ?? '')
             .input('Nombre',sql.VarChar, personaje?.nombre ?? '')
             .input('Edad',sql.Float, personaje?.edad ?? 0)
             .input('Peso',sql.Float, personaje?.peso ?? 0)
