@@ -10,10 +10,10 @@ router.post("/create", async function (req, res) {
     return res.status(201).json(personaje);
 });
 
-router.post("/update", function (req, res) {
+router.post("/update/:id", async function (req, res) {
+    const personaje = await personajeService.updatePersonajeById(req.params.id, req.body);
 
-
-    res.send();
+    return res.send(201).json(personaje);
 });
 
 router.get("/getAll", async function (req, res) {
@@ -32,9 +32,10 @@ router.get("/getById/:id", async function (req, res) {
     return res.status(200).json(personaje);
 });
 
-router.get("/delete", function (req, res) {
-    
-    res.send();
+router.delete("/delete/:id", async function (req, res) {
+    const personaje = await personajeService.deletePersonajeById(req.params.id);
+
+    return res.send(202);
 });
 
 export default router;

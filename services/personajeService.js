@@ -2,7 +2,7 @@ import sql from 'mssql'
 import config from '../db.js'
 import 'dotenv/config'
 
-const personajeTabla = process.env.DB_TABLA_PIZZA;
+const personajeTabla = process.env.DB_TABLA_PERSONAJES;
 
 export class PersonajeService {
 
@@ -44,17 +44,18 @@ export class PersonajeService {
         return response.recordset;
     }
 
-    updatePersonajeById = async (id, pizza) => {
+    updatePersonajeById = async (id, personaje) => {
         console.log('This is a function on the service');
 
         const pool = await sql.connect(config);
         const response = await pool.request()
-            .input('id',sql.Int, id)
-            .input('Nombre',sql.NChar, pizza?.nombre ?? '')
-            .input('LibreGluten',sql.Bit, pizza?.libreGluten ?? false)
-            .input('Importe',sql.NChar, pizza?.importe ?? 0)
-            .input('Descripcion',sql.NChar, pizza?.description ?? '')
-            .query(`UPDATE Pizzas SET Nombre = @Nombre, LibreGluten = @LibreGluten, Importe = @Importe, Descripcion = @Descripcion WHERE id = @Id`);
+            .input('Id',sql.Int, id)
+            .input('Imagen',sql.VarChar, personaje?.imagen ?? '')
+            .input('Nombre',sql.VarChar, personaje?.nombre ?? '')
+            .input('Edad',sql.Float, personaje?.edad ?? 0)
+            .input('Peso',sql.Float, personaje?.peso ?? 0)
+            .input('Historia',sql.VarChar, personaje?.historia ?? '')
+            .query(`UPDATE ${personajeTabla} SET Imagen = @Imagen, Nombre = @Nombre, Edad = @Edad, Peso = @Peso, Historia = @Historia WHERE Id = @Id`);
         console.log(response)
 
         return response.recordset;
@@ -65,8 +66,8 @@ export class PersonajeService {
 
         const pool = await sql.connect(config);
         const response = await pool.request()
-            .input('id',sql.Int, id)
-            .query(`DELETE FROM ${pizzaTabla} WHERE id = @id`);
+            .input('Id',sql.Int, id)
+            .query(`DELETE FROM ${personajeTabla} WHERE Id = @Id`);
         console.log(response)
 
         return response.recordset;
