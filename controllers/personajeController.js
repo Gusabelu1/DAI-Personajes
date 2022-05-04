@@ -10,26 +10,26 @@ router.post("/create", async function (req, res) {
     return res.status(201).json(personaje);
 });
 
-router.post("/update/:id", async function (req, res) {
-    const personaje = await personajeService.updatePersonajeById(req.params.id, req.body);
+router.post("/update", async function (req, res) {
+    const personaje = await personajeService.updatePersonajeById(req.query.id, req.body);
 
     return res.send(201).json(personaje);
 });
 
-/* router.get("/getAll", async function (req, res) {
+router.get("/getById", async function (req, res) {
     console.log(`This is a get operation`);
-    const personaje = await personajeService.getPersonaje();
+    const personaje = await personajeService.getPersonajeById(req.query.id);
 
     return res.status(200).json(personaje);
-}); */
+});
 
-router.get("/get/:id", async function (req, res) {
-    console.log(`Request URL Param: ${req.params.id}`);
+router.get("/getAll", async function (req, res) {
+    console.log(`Request URL Param: ${req.query.edad}, ${req.query.nombre}`);
     console.log(`This is a get operation`);
     let personaje;
 
-    if (req.params.id != null) {
-        personaje = await personajeService.getPersonajeById(req.params.id);
+    if (req.query.nombre || req.query.edad) {
+        personaje = await personajeService.getPersonajeByEdadNombre(req.query.edad, req.query.nombre);
     } else {
         personaje = await personajeService.getPersonaje();
     }
@@ -37,8 +37,8 @@ router.get("/get/:id", async function (req, res) {
     return res.status(200).json(personaje);
 });
 
-router.delete("/delete/:id", async function (req, res) {
-    const personaje = await personajeService.deletePersonajeById(req.params.id);
+router.delete("/delete", async function (req, res) {
+    const personaje = await personajeService.deletePersonajeById(req.query.id);
 
     return res.send(202);
 });

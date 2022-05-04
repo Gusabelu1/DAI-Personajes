@@ -28,6 +28,30 @@ export class PersonajeService {
         return response.recordset[0];
     }
 
+    getPersonajeByEdadNombre = async (edad, nombre) => {
+        console.log('This is a function on the service');
+        const pool = await sql.connect(config);
+        let response;
+
+        if (edad && !nombre) {
+            response = await pool.request()
+                .input('edad',sql.Float, edad)
+                .query(`SELECT * from ${personajeTabla} where Edad = @edad`);
+        } else if (nombre && !edad) {
+            response = await pool.request()
+                .input('nombre',sql.VarChar, nombre)
+                .query(`SELECT * from ${personajeTabla} where Nombre = @nombre`);
+        } else {
+            response = await pool.request()
+                .input('edad',sql.Float, edad)
+                .input('nombre',sql.VarChar, nombre)
+                .query(`SELECT * from ${personajeTabla} where Edad = @edad AND Nombre = @nombre`);
+        }
+
+        console.log(response)
+        return response.recordset;
+    }
+
     createPersonaje = async (personaje) => {
         console.log('This is a function on the service');
 
