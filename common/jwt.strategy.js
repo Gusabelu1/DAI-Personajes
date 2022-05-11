@@ -1,6 +1,6 @@
 import 'dotenv/config'
-/* import { ExtractJwt, Strategy } from "passport-jwt/lib";
-import { Passport } from "passport/lib"; */
+import { ExtractJwt, Strategy } from "passport-jwt";
+import passport from "passport";
 
 const opt = {
     secretOrKey: process.env.AUTH_HS256_KEY,
@@ -9,7 +9,7 @@ const opt = {
     algorithm: ["HS256"],
 };
 
-const jwtStrategy = new Strategy(opt, (jwt_payload, done) => {
+export const jwtStrategy = new Strategy(opt, (jwt_payload, done) => {
     if (!jwt_payload) {
         done(true);
     } else {
@@ -25,5 +25,5 @@ export const Authenticate = (req, res, next) => {
     else {
         next();
     }
-  });
+  })(req, res, next);
 };

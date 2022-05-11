@@ -1,17 +1,19 @@
 import express from "express";
 import cors from "cors";
 import PersonajeRouter from "./controllers/personajeController.js";
-/* import { Passport } from "passport/lib";
-import JwtStrategy from "passport-jwt/lib/strategy"; */
+import TokenRouter from "./controllers/tokenController.js"
+import passport from "passport";
+import { jwtStrategy } from "./common/jwt.strategy.js";
 
 const port = 3000;
 const app = express();
 
 app.use(cors());
 app.use(express.json());
-/* Passport.use(JwtStrategy);
-app.use(Passport.initialize()); */
+passport.use(jwtStrategy);
+app.use(passport.initialize());
 app.use("/personaje", PersonajeRouter)
+app.use("/auth", TokenRouter)
 
 app.listen(port, function(err){
 	if (err) console.log(err);

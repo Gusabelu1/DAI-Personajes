@@ -5,17 +5,6 @@ import 'dotenv/config'
 const personajeTabla = process.env.DB_TABLA_PERSONAJES;
 
 export class PersonajeService {
-
-    getPersonaje = async () => {
-        console.log('This is a function on the service');
-
-        const pool = await sql.connect(config);
-        const response = await pool.request().query(`SELECT * from ${personajeTabla}`);
-        console.log(response)
-
-        return response.recordset;
-    }
-
     getPersonajeById = async (id) => {
         console.log('This is a function on the service');
 
@@ -28,12 +17,17 @@ export class PersonajeService {
         return response.recordset[0];
     }
 
-    getPersonajeByEdadNombre = async (edad, nombre) => {
+    getPersonaje = async (edad, nombre) => {
         console.log('This is a function on the service');
         const pool = await sql.connect(config);
         let response;
 
-        if (edad && !nombre) {
+        if (edad && nombre) {
+            response = await pool.request()
+                .input('edad',sql.Float, edad)
+                .input('nombre',sql.VarChar, nombre)
+                .query(`SELECT * from ${personajeTabla} where Edad = @edad AND Nombre = @nombre`);
+        } else if (edad && !nombre) {
             response = await pool.request()
                 .input('edad',sql.Float, edad)
                 .query(`SELECT * from ${personajeTabla} where Edad = @edad`);
@@ -43,9 +37,7 @@ export class PersonajeService {
                 .query(`SELECT * from ${personajeTabla} where Nombre = @nombre`);
         } else {
             response = await pool.request()
-                .input('edad',sql.Float, edad)
-                .input('nombre',sql.VarChar, nombre)
-                .query(`SELECT * from ${personajeTabla} where Edad = @edad AND Nombre = @nombre`);
+                .query(`SELECT * from ${personajeTabla}`);
         }
 
         console.log(response)
