@@ -12,7 +12,7 @@ app.use(cors());
 app.use(express.json());
 passport.use(jwtStrategy);
 app.use(passport.initialize());
-app.use("/personaje", PersonajeRouter)
+app.use("/characters", PersonajeRouter)
 app.use("/auth", TokenRouter)
 
 app.listen(port, function(err){

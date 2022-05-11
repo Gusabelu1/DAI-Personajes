@@ -15,7 +15,7 @@ export class TokenService {
     };
 
     getSignedToken = () => {
-        const userId = getRandomString();
+        const userId = this.getRandomString();
         const userMail = `${userId}@example.com`;
         const token = jwt.sign(
             {

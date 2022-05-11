@@ -17,29 +17,37 @@ export class PersonajeService {
         return response.recordset[0];
     }
 
-    getPersonaje = async (edad, nombre) => {
+    getPersonaje = async (name, age, weight, serie) => {
         console.log('This is a function on the service');
         const pool = await sql.connect(config);
-        let response;
+        let response = await pool.request()
 
-        if (edad && nombre) {
-            response = await pool.request()
-                .input('edad',sql.Float, edad)
-                .input('nombre',sql.VarChar, nombre)
-                .query(`SELECT * from ${personajeTabla} where Edad = @edad AND Nombre = @nombre`);
-        } else if (edad && !nombre) {
-            response = await pool.request()
-                .input('edad',sql.Float, edad)
-                .query(`SELECT * from ${personajeTabla} where Edad = @edad`);
-        } else if (nombre && !edad) {
-            response = await pool.request()
-                .input('nombre',sql.VarChar, nombre)
-                .query(`SELECT * from ${personajeTabla} where Nombre = @nombre`);
+        if (!name && !age && !weight && !serie) {
+            response = response.query(`SELECT * from ${personajeTabla}`);
         } else {
-            response = await pool.request()
-                .query(`SELECT * from ${personajeTabla}`);
+            if (name) {
+                response = response.input('nombre',sql.VarChar, name)
+            } else {
+                response = response.input('nombre',sql.VarChar, '')
+            }
+            if (age) {
+                response = response.input('edad',sql.Float, age)
+            } else {
+                response = response.input('edad',sql.Float, 0)
+            }
+            if (weight) {
+                response = response.input('peso',sql.Float, weight)
+            } else {
+                response = response.input('peso',sql.Float, 0)
+            }
+            if (serie) {
+                response = response.input('serie',sql.VarChar, serie)
+            } else {
+                response = response.input('serie',sql.VarChar, '')
+            }
+            response = response.query(`SELECT * from ${personajeTabla} where Nombre = @nombre AND Edad = @edad AND Peso = @peso AND Series = @serie`);
         }
-
+        
         console.log(response)
         return response.recordset;
     }
