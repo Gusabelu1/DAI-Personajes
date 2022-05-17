@@ -21,30 +21,33 @@ export class PersonajeService {
         console.log('This is a function on the service');
         const pool = await sql.connect(config);
         let response = await pool.request()
+        let nombreInput = response.input('nombre',sql.VarChar, name);
+        let edadInput = response.input('edad',sql.Float, age);
+        let pesoInput = response.input('peso',sql.Float, weight);
+        let serieInput = response.input('serie',sql.VarChar, serie);
+        
+        const query = response.query(`SELECT * from ${personajeTabla}`);
 
         if (!name && !age && !weight && !serie) {
             response = response.query(`SELECT * from ${personajeTabla}`);
         } else {
             if (name) {
-                response = response.input('nombre',sql.VarChar, name)
-            } else {
-                response = response.input('nombre',sql.VarChar, '')
+                response = response.query(`WHERE Nombre = @nombre`);
+                response = nombreInput;
             }
             if (age) {
-                response = response.input('edad',sql.Float, age)
-            } else {
-                response = response.input('edad',sql.Float, 0)
+                response = response.query(`WHERE Edad = @edad`);
+                response = edadInput;
             }
             if (weight) {
-                response = response.input('peso',sql.Float, weight)
-            } else {
-                response = response.input('peso',sql.Float, 0)
+                response = response.query(`WHERE Peso = @peso`);
+                response = pesoInput;
             }
             if (serie) {
-                response = response.input('serie',sql.VarChar, serie)
-            } else {
-                response = response.input('serie',sql.VarChar, '')
+                response = response.query(`WHERE Series = @serie`);
+                response = serieInput;
             }
+
             response = response.query(`SELECT * from ${personajeTabla} where Nombre = @nombre AND Edad = @edad AND Peso = @peso AND Series = @serie`);
         }
         
