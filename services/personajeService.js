@@ -3,6 +3,7 @@ import config from '../db.js'
 import 'dotenv/config'
 
 const personajeTabla = process.env.DB_TABLA_PERSONAJES;
+const combinacionTabla = process.env.DB_TABLA_SERIESANDPERSONAJES;
 
 export class PersonajeService {
     getPersonajeById = async (id) => {
@@ -19,39 +20,30 @@ export class PersonajeService {
 
     getPersonaje = async (name, age, weight, serie) => {
         console.log('This is a function on the service');
+        
+        let query = `SELECT DISTINCT pers.* from ${personajeTabla} pers, ${combinacionTabla} comb WHERE pers.Id=comb.IdPersonajes `;
+
+        if (name) {
+            query += ` AND Nombre = @nombre`
+        }
+        if (age) {
+            query += ` AND Edad = @edad`
+        }
+        if (weight) {
+            query += ` AND Peso = @peso`
+        }
+        if (serie) {
+            query += ` AND Series = @serie`
+        }
+
         const pool = await sql.connect(config);
         let response = await pool.request()
-        let nombreInput = response.input('nombre',sql.VarChar, name);
-        let edadInput = response.input('edad',sql.Float, age);
-        let pesoInput = response.input('peso',sql.Float, weight);
-        let serieInput = response.input('serie',sql.VarChar, serie);
+            .input('nombre',sql.VarChar, name)
+            .input('edad',sql.Float, age)
+            .input('peso',sql.Float, weight)
+            .input('serie',sql.Int, serie)
+            .query(query);
         
-        const query = response.query(`SELECT * from ${personajeTabla}`);
-
-        if (!name && !age && !weight && !serie) {
-            response = response.query(`SELECT * from ${personajeTabla}`);
-        } else {
-            if (name) {
-                response = response.query(`WHERE Nombre = @nombre`);
-                response = nombreInput;
-            }
-            if (age) {
-                response = response.query(`WHERE Edad = @edad`);
-                response = edadInput;
-            }
-            if (weight) {
-                response = response.query(`WHERE Peso = @peso`);
-                response = pesoInput;
-            }
-            if (serie) {
-                response = response.query(`WHERE Series = @serie`);
-                response = serieInput;
-            }
-
-            response = response.query(`SELECT * from ${personajeTabla} where Nombre = @nombre AND Edad = @edad AND Peso = @peso AND Series = @serie`);
-        }
-        
-        console.log(response)
         return response.recordset;
     }
 

@@ -6,7 +6,7 @@ const router = Router();
 const seriesService = new SeriesService();
 
 router.get("", Authenticate, async function (req, res) {    
-    const series = await seriesService.getSeries();
+    const series = await seriesService.getSeries(req.query.id);
     
     return res.status(200).json(series);
 });
