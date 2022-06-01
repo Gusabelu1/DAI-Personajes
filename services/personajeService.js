@@ -3,16 +3,15 @@ import config from '../db.js'
 import 'dotenv/config'
 
 const personajeTabla = process.env.DB_TABLA_PERSONAJES;
+const seriesTabla = process.env.DB_TABLA_SERIES;
 const combinacionTabla = process.env.DB_TABLA_SERIESANDPERSONAJES;
 
 export class PersonajeService {
     getPersonajeById = async (id) => {
-        console.log('This is a function on the service');
-
         const pool = await sql.connect(config);
         const response = await pool.request()
-            .input('id',sql.Int, id)
-            .query(`SELECT * from ${personajeTabla} where id = @id`);
+            .input('Id',sql.Int, id)
+            .query(`SELECT pers.*, serie.*  FROM ${combinacionTabla} comb, ${personajeTabla} pers, ${seriesTabla} serie WHERE comb.IdPersonajes=@Id`);
         console.log(response)
 
         return response.recordset[0];
@@ -21,8 +20,13 @@ export class PersonajeService {
     getPersonaje = async (name, age, weight, serie) => {
         console.log('This is a function on the service');
         
-        let query = `SELECT DISTINCT pers.* from ${personajeTabla} pers, ${combinacionTabla} comb WHERE pers.Id=comb.IdPersonajes `;
+        let query = `SELECT DISTINCT pers.Imagen, pers.Nombre, pers.Id from ${personajeTabla} pers, ${combinacionTabla} comb`;
 
+        if (serie) {
+            query += ` WHERE pers.Id = comb.IdPersonajes AND comb.IdSeries = @serie`
+        } else {
+            query += ` WHERE pers.Id > 0`
+        }
         if (name) {
             query += ` AND Nombre = @nombre`
         }
@@ -31,9 +35,6 @@ export class PersonajeService {
         }
         if (weight) {
             query += ` AND Peso = @peso`
-        }
-        if (serie) {
-            query += ` AND Series = @serie`
         }
 
         const pool = await sql.connect(config);
