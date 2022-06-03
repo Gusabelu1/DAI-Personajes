@@ -9,12 +9,21 @@ const combinacionTabla = process.env.DB_TABLA_SERIESANDPERSONAJES;
 export class PersonajeService {
     getPersonajeById = async (id) => {
         const pool = await sql.connect(config);
-        const response = await pool.request()
-            .input('Id',sql.Int, id)
-            .query(`SELECT pers.*, serie.*  FROM ${combinacionTabla} comb, ${personajeTabla} pers, ${seriesTabla} serie WHERE comb.IdPersonajes=@Id`);
-        console.log(response)
+        let response;
+        let response2;
 
-        return response.recordset[0];
+        response = await pool.request()
+            .input('Id',sql.Int, id)
+            .query(`SELECT * FROM ${personajeTabla} WHERE Id=@Id`);
+
+        response2 = await pool.request()
+            .input('Id',sql.Int, id)
+            .query(`SELECT serie.*  FROM ${seriesTabla} serie, ${combinacionTabla} comb WHERE serie.id = comb.IdSeries AND comb.IdPersonajes = @Id`);
+
+
+        console.log(response);
+        console.log(response2);
+        return [response.recordset, response2.recordset];
     }
 
     getPersonaje = async (name, age, weight, serie) => {

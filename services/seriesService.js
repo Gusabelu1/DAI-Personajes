@@ -19,40 +19,29 @@ export class SeriesService {
 
         response2 = await pool.request()
             .input('Id',sql.Int, id)
-            .query(`SELECT *  FROM ${personajeTabla} pers, ${combinacionTabla} comb WHERE pers.Id = comb.IdPersonajes AND comb.IdSeries = @Id`);
+            .query(`SELECT pers.*  FROM ${personajeTabla} pers, ${combinacionTabla} comb WHERE pers.Id = comb.IdPersonajes AND comb.IdSeries = @Id`);
         
         console.log(response);
         console.log(response2);
         return [response.recordset, response2.recordset];
     }
 
-    getSeries = async (name, age, weight, serie) => {
+    getSeries = async (name, order) => {
         console.log('This is a function on the service');
         
-        let query = `SELECT DISTINCT pers.Imagen, pers.Nombre, pers.Id from ${personajeTabla} pers, ${combinacionTabla} comb`;
+        let query = `SELECT DISTINCT * from ${seriesTabla} WHERE Id > 0`;
 
-        if (serie) {
-            query += ` WHERE pers.Id = comb.IdPersonajes AND comb.IdSeries = @serie`
-        } else {
-            query += ` WHERE pers.Id > 0`
-        }
         if (name) {
-            query += ` AND Nombre = @nombre`
+            query += ` AND Titulo = @titulo`
         }
-        if (age) {
-            query += ` AND Edad = @edad`
-        }
-        if (weight) {
-            query += ` AND Peso = @peso`
+        if (order) {
+            query += ` ORDER BY Titulo ${order}`
         }
 
         const pool = await sql.connect(config);
         let response = await pool.request()
-            .input('nombre',sql.VarChar, name)
-            .input('edad',sql.Float, age)
-            .input('peso',sql.Float, weight)
-            .input('serie',sql.Int, serie)
-            .query(query);
+            .input('titulo',sql.VarChar, name)
+            .query(query)
         
         return response.recordset;
     }

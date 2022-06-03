@@ -1,0 +1,477 @@
+{
+	"info": {
+		"_postman_id": "694dba22-af02-48b2-b7c5-01a32edb2f30",
+		"name": "DAI",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20441939"
+	},
+	"item": [
+		{
+			"name": "Personajes",
+			"item": [
+				{
+					"name": "Auth",
+					"item": [
+						{
+							"name": "Login",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:{{Port}}/auth/login",
+									"host": [
+										"localhost"
+									],
+									"port": "{{Port}}",
+									"path": [
+										"auth",
+										"login"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Characters",
+					"item": [
+						{
+							"name": "GetAll",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Bearer Token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:{{Port}}/characters",
+									"host": [
+										"localhost"
+									],
+									"port": "{{Port}}",
+									"path": [
+										"characters"
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": null,
+											"disabled": true
+										},
+										{
+											"key": "age",
+											"value": null,
+											"disabled": true
+										},
+										{
+											"key": "weight",
+											"value": null,
+											"disabled": true
+										},
+										{
+											"key": "serie",
+											"value": null,
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetById",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Bearer Token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:{{Port}}/characters/getById",
+									"host": [
+										"localhost"
+									],
+									"port": "{{Port}}",
+									"path": [
+										"characters",
+										"getById"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Bearer Token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"imagen\": \"\",\r\n    \"nombre\": \"\",\r\n    \"edad\": 0,\r\n    \"peso\": 0,\r\n    \"historia\": \"\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:{{Port}}/characters/create",
+									"host": [
+										"localhost"
+									],
+									"port": "{{Port}}",
+									"path": [
+										"characters",
+										"create"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Bearer Token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"imagen\": \"\",\r\n    \"nombre\": \"\",\r\n    \"edad\": 0,\r\n    \"peso\": 0,\r\n    \"historia\": \"\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:{{Port}}/characters/update",
+									"host": [
+										"localhost"
+									],
+									"port": "{{Port}}",
+									"path": [
+										"characters",
+										"update"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Bearer Token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "localhost:{{Port}}/characters",
+									"host": [
+										"localhost"
+									],
+									"port": "{{Port}}",
+									"path": [
+										"characters"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Series",
+					"item": [
+						{
+							"name": "GetAll",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Bearer Token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:{{Port}}/series",
+									"host": [
+										"localhost"
+									],
+									"port": "{{Port}}",
+									"path": [
+										"series"
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": "",
+											"disabled": true
+										},
+										{
+											"key": "order",
+											"value": "ASC | DESC",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetById",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Bearer Token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:{{Port}}/series/getById",
+									"host": [
+										"localhost"
+									],
+									"port": "{{Port}}",
+									"path": [
+										"series",
+										"getById"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Bearer Token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"iamgen\": \"\",\r\n    \"titulo\": \"\",\r\n    \"calificacion\": 0\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:{{Port}}/series/create",
+									"host": [
+										"localhost"
+									],
+									"port": "{{Port}}",
+									"path": [
+										"series",
+										"create"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Bearer Token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"imagen\": \"\",\r\n    \"titulo\": \"\",\r\n    \"calificacion\": 0\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:{{Port}}/series/update",
+									"host": [
+										"localhost"
+									],
+									"port": "{{Port}}",
+									"path": [
+										"series",
+										"update"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Bearer Token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "localhost:{{Port}}/series",
+									"host": [
+										"localhost"
+									],
+									"port": "{{Port}}",
+									"path": [
+										"series"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "Bearer Token",
+			"value": ""
+		},
+		{
+			"key": "Port",
+			"value": "3000"
+		}
+	]
+}
